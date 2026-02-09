@@ -226,7 +226,9 @@ corrplot(wine.cor,
 ```
 
 # Heatmap for Visualising and Analysing Multivariate Data
+
 ## 14.2 Installing and Launching R Packages
+
 ```{r}
 #| message: false
 #| warning: false
@@ -234,6 +236,7 @@ pacman::p_load(seriation, dendextend, heatmaply, tidyverse)
 ```
 
 ## 14.3 Importing and Preparing The Data Set
+
 ```{r}
 #| message: false
 #| warning: false
@@ -244,6 +247,7 @@ wh_matrix <- data.matrix(wh)
 ```
 
 ## 14.4 Static Heatmap
+
 ```{r}
 wh_heatmap <- heatmap(wh_matrix,
                       Rowv=NA, Colv=NA)
@@ -258,18 +262,23 @@ wh_heatmap <- heatmap(wh_matrix,
 # Visual Multivariate Analysis with Parallel Coordinates Plot
 
 ## 15.2 Installing and Launching R Packages
+
 ```{r}
 #| message: false
 #| warning: false
 pacman::p_load(GGally, parallelPlot, tidyverse)
 wh <- read_csv("WHData-2018.csv")
 ```
+
 ## 15.4.1 Plotting a simple parallel coordinates
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12))
 ```
+
 ## 15.4.2 Plotting a parallel coordinates with boxplot
+
 ```{r}
 #| message: false
 #| warning: false
@@ -281,7 +290,9 @@ ggparcoord(data = wh,
            boxplot = TRUE, 
            title = "Parallel Coordinates Plot of World Happines Variables")
 ```
+
 ## 15.4.3 Parallel coordinates with facet
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12), 
@@ -294,6 +305,7 @@ ggparcoord(data = wh,
 ```
 
 ## 15.4.4 Rotating x-axis text label
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12), 
@@ -307,6 +319,7 @@ ggparcoord(data = wh,
 ```
 
 ## 15.4.5 Adjusting the rotated x-axis text label
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12), 
@@ -320,6 +333,7 @@ ggparcoord(data = wh,
 ```
 
 ## 15.5.4 Parallel coordinates plot with histogram
+
 ```{r}
 histoVisibility <- rep(TRUE, ncol(wh))
 parallelPlot(wh,
@@ -328,7 +342,9 @@ parallelPlot(wh,
 ```
 
 # Treemap Visualisation with R
+
 ## 16.2 Installing and Launching R Packages
+
 ```{r}
 #| message: false
 #| warning: false
@@ -337,6 +353,7 @@ realis2018 <- read_csv("realis2018.csv")
 ```
 
 ## 16.3.3 Grouped summaries without the Pipe
+
 ```{r}
 #| message: false
 #| warning: false
@@ -351,6 +368,7 @@ realis2018_summarised <- summarise(realis2018_grouped,
 ```
 
 ## 16.3.4 Grouped summaries with the pipe
+
 ```{r}
 #| message: false
 #| warning: false
@@ -365,12 +383,14 @@ realis2018_summarised <- realis2018 %>%
 ```
 
 ## 16.4.1 Designing a static treemap
+
 ```{r}
 realis2018_selected <- realis2018_summarised %>%
   filter(`Property Type` == "Condominium", `Type of Sale` == "Resale")
 ```
 
 ## 16.4.2 Using the basic arguments
+
 ```{r}
 treemap(realis2018_selected,
         index=c("Planning Region", "Planning Area", "Project Name"),
@@ -382,6 +402,7 @@ treemap(realis2018_selected,
 ```
 
 ## 16.4.3 Working with vColor and type arguments
+
 ```{r}
 treemap(realis2018_selected,
         index=c("Planning Region", "Planning Area", "Project Name"),
@@ -421,6 +442,7 @@ treemap(realis2018_selected,
 ```
 
 ## 16.4.8 Working with algorithm argument
+
 ```{r}
 treemap(realis2018_selected,
         index=c("Planning Region", "Planning Area", "Project Name"),
@@ -446,6 +468,7 @@ treemap(realis2018_selected,
 ```
 
 ## 16.5 Designing Treemap using treemapify Package
+
 ```{r}
 ggplot(data=realis2018_selected, 
        aes(area = `Total Unit Sold`,
@@ -479,8 +502,6 @@ ggplot(data=realis2018_selected,
 
 ## 16.6 Designing Interactive Treemap using d3treeR
 
-
-
 ```{r}
 library(devtools)
 install_github("timelyportfolio/d3treeR")
@@ -492,6 +513,7 @@ library(treemap)
 ```
 
 ## 16.6.2 Designing An Interactive Treemap
+
 ```{r}
 tm <- treemap(realis2018_summarised,
         index=c("Planning Region", "Planning Area"),
@@ -503,3 +525,4 @@ tm <- treemap(realis2018_summarised,
         )
 d3tree(tm,rootname = "Singapore" )
 ```
+## finish
