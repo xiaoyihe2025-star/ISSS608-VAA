@@ -42,11 +42,88 @@
     "text": "exam_data &lt;- read_csv(\"Exam_data.csv\")\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              size=0.5) +  \n  geom_label(aes(label = ID), \n             hjust = .5, \n             vjust = -.5) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ISSS608-VAA",
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html",
+    "title": "Hands-on_Ex04",
     "section": "",
-    "text": "Welcome to ISSS608 Visual Analytics and Applications. In this website, you will find my coursework prepared for this course."
+    "text": "pacman::p_load(ggdist, ggridges, ggthemes,\n               colorspace, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#varying-fill-colors-along-the-x-axis",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#varying-fill-colors-along-the-x-axis",
+    "title": "Hands-on_Ex04",
+    "section": "Varying fill colors along the x axis",
+    "text": "Varying fill colors along the x axis\n\nggplot(exam, \n       aes(x = ENGLISH, \n           y = CLASS,\n           fill = stat(x))) +\n  geom_density_ridges_gradient(\n    scale = 3,\n    rel_min_height = 0.01) +\n  scale_fill_viridis_c(name = \"Temp. [F]\",\n                       option = \"C\") +\n  scale_x_continuous(\n    name = \"English grades\",\n    expand = c(0, 0)\n  ) +\n  scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +\n  theme_ridges()\n\nWarning: `stat(x)` was deprecated in ggplot2 3.4.0.\nℹ Please use `after_stat(x)` instead.\n\n\nPicking joint bandwidth of 3.18"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#mapping-the-probabilities-directly-onto-colour",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#mapping-the-probabilities-directly-onto-colour",
+    "title": "Hands-on_Ex04",
+    "section": "Mapping the probabilities directly onto colour",
+    "text": "Mapping the probabilities directly onto colour\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = 0.5 - abs(0.5-stat(ecdf)))) +\n  stat_density_ridges(geom = \"density_ridges_gradient\", \n                      calc_ecdf = TRUE) +\n  scale_fill_viridis_c(name = \"Tail probability\",\n                       direction = -1) +\n  theme_ridges()\n\nPicking joint bandwidth of 3.18"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#ridgeline-plots-with-quantile-lines",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#ridgeline-plots-with-quantile-lines",
+    "title": "Hands-on_Ex04",
+    "section": "Ridgeline plots with quantile lines",
+    "text": "Ridgeline plots with quantile lines\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = factor(stat(quantile))\n           )) +\n  stat_density_ridges(\n    geom = \"density_ridges_gradient\",\n    calc_ecdf = TRUE, \n    quantiles = 4,\n    quantile_lines = TRUE) +\n  scale_fill_viridis_d(name = \"Quartiles\") +\n  theme_ridges()\n\nPicking joint bandwidth of 3.18\n\n\n\n\n\n\n\n\n\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = factor(stat(quantile))\n           )) +\n  stat_density_ridges(\n    geom = \"density_ridges_gradient\",\n    calc_ecdf = TRUE, \n    quantiles = c(0.025, 0.975)\n    ) +\n  scale_fill_manual(\n    name = \"Probability\",\n    values = c(\"#FF0000A0\", \"#A0A0A0A0\", \"#0000FFA0\"),\n    labels = c(\"(0, 0.025]\", \"(0.025, 0.975]\", \"(0.975, 1]\")\n  ) +\n  theme_ridges()\n\nPicking joint bandwidth of 3.18"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-a-half-eye-graph",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-a-half-eye-graph",
+    "title": "Hands-on_Ex04",
+    "section": "Plotting a Half Eye graph",
+    "text": "Plotting a Half Eye graph\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-the-boxplot-with-geom_boxplot",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-the-boxplot-with-geom_boxplot",
+    "title": "Hands-on_Ex04",
+    "section": "Adding the boxplot with geom_boxplot()",
+    "text": "Adding the boxplot with geom_boxplot()\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-the-dot-plots-with-stat_dots",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-the-dot-plots-with-stat_dots",
+    "title": "Hands-on_Ex04",
+    "section": "Adding the Dot Plots with stat_dots()",
+    "text": "Adding the Dot Plots with stat_dots()\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\", \n            justification = 1.2, \n            binwidth = .5,\n            dotsize = 2)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#finishing-touch",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#finishing-touch",
+    "title": "Hands-on_Ex04",
+    "section": "Finishing touch",
+    "text": "Finishing touch\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\", \n            justification = 1.2, \n            binwidth = .5,\n            dotsize = 1.5) +\n  coord_flip() +\n  theme_economist()\n\nWarning: The provided binwidth will cause dots to overflow the boundaries of the\ngeometry.\n→ Set `binwidth = NA` to automatically determine a binwidth that ensures dots\n  fit within the bounds,\n→ OR set `overflow = \"compress\"` to automatically reduce the spacing between\n  dots to ensure the dots fit within the bounds,\n→ OR set `overflow = \"keep\"` to allow dots to overflow the bounds of the\n  geometry without producing a warning.\nℹ For more information, see the documentation of the `binwidth` and `overflow`\n  arguments of `?ggdist::geom_dots()` or the section on constraining dot sizes\n  in vignette(\"dotsinterval\") (`vignette(ggdist::dotsinterval)`)."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#installing-and-launching-r-packages",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#installing-and-launching-r-packages",
+    "title": "Hands-on_Ex04",
+    "section": "Installing and launching R packages",
+    "text": "Installing and launching R packages\n\npacman::p_load(ggstatsplot, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#one-sample-test-gghistostats-method",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#one-sample-test-gghistostats-method",
+    "title": "Hands-on_Ex04",
+    "section": "One-sample test: gghistostats() method",
+    "text": "One-sample test: gghistostats() method\n\nset.seed(1234)\n\ngghistostats(\n  data = exam,\n  x = ENGLISH,\n  type = \"bayes\",\n  test.value = 60,\n  xlab = \"English scores\"\n)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#two-sample-mean-test-ggbetweenstats",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#two-sample-mean-test-ggbetweenstats",
+    "title": "Hands-on_Ex04",
+    "section": "Two-sample mean test: ggbetweenstats()",
+    "text": "Two-sample mean test: ggbetweenstats()\n\nggbetweenstats(\n  data = exam,\n  x = GENDER, \n  y = MATHS,\n  type = \"np\",\n  messages = FALSE\n)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#oneway-anova-test-ggbetweenstats-method",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#oneway-anova-test-ggbetweenstats-method",
+    "title": "Hands-on_Ex04",
+    "section": "Oneway ANOVA Test: ggbetweenstats() method",
+    "text": "Oneway ANOVA Test: ggbetweenstats() method\n\nggbetweenstats(\n  data = exam,\n  x = RACE, \n  y = ENGLISH,\n  type = \"p\",\n  mean.ci = TRUE, \n  pairwise.comparisons = TRUE, \n  pairwise.display = \"s\",\n  p.adjust.method = \"fdr\",\n  messages = FALSE\n)"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html",
@@ -168,90 +245,6 @@
     "text": "3.8.2 Linked brushing: crosstalk method\n\nd &lt;- highlight_key(exam_data) \np &lt;- ggplot(d, \n            aes(ENGLISH, \n                MATHS)) + \n  geom_point(size=1) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100))\n\ngg &lt;- highlight(ggplotly(p),        \n                \"plotly_selected\")  \n\ncrosstalk::bscols(gg,               \n                  DT::datatable(d), \n                  widths = 5)        \n\nSetting the `off` event (i.e., 'plotly_deselect') to match the `on` event (i.e., 'plotly_selected'). You can change this default via the `highlight()` function."
   },
   {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html",
-    "title": "Hands-on_Ex04",
-    "section": "",
-    "text": "pacman::p_load(ggdist, ggridges, ggthemes,\n               colorspace, tidyverse)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#varying-fill-colors-along-the-x-axis",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#varying-fill-colors-along-the-x-axis",
-    "title": "Hands-on_Ex04",
-    "section": "Varying fill colors along the x axis",
-    "text": "Varying fill colors along the x axis\n\nggplot(exam, \n       aes(x = ENGLISH, \n           y = CLASS,\n           fill = stat(x))) +\n  geom_density_ridges_gradient(\n    scale = 3,\n    rel_min_height = 0.01) +\n  scale_fill_viridis_c(name = \"Temp. [F]\",\n                       option = \"C\") +\n  scale_x_continuous(\n    name = \"English grades\",\n    expand = c(0, 0)\n  ) +\n  scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +\n  theme_ridges()\n\nWarning: `stat(x)` was deprecated in ggplot2 3.4.0.\nℹ Please use `after_stat(x)` instead.\n\n\nPicking joint bandwidth of 3.18"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#mapping-the-probabilities-directly-onto-colour",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#mapping-the-probabilities-directly-onto-colour",
-    "title": "Hands-on_Ex04",
-    "section": "Mapping the probabilities directly onto colour",
-    "text": "Mapping the probabilities directly onto colour\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = 0.5 - abs(0.5-stat(ecdf)))) +\n  stat_density_ridges(geom = \"density_ridges_gradient\", \n                      calc_ecdf = TRUE) +\n  scale_fill_viridis_c(name = \"Tail probability\",\n                       direction = -1) +\n  theme_ridges()\n\nPicking joint bandwidth of 3.18"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#ridgeline-plots-with-quantile-lines",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#ridgeline-plots-with-quantile-lines",
-    "title": "Hands-on_Ex04",
-    "section": "Ridgeline plots with quantile lines",
-    "text": "Ridgeline plots with quantile lines\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = factor(stat(quantile))\n           )) +\n  stat_density_ridges(\n    geom = \"density_ridges_gradient\",\n    calc_ecdf = TRUE, \n    quantiles = 4,\n    quantile_lines = TRUE) +\n  scale_fill_viridis_d(name = \"Quartiles\") +\n  theme_ridges()\n\nPicking joint bandwidth of 3.18\n\n\n\n\n\n\n\n\n\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = factor(stat(quantile))\n           )) +\n  stat_density_ridges(\n    geom = \"density_ridges_gradient\",\n    calc_ecdf = TRUE, \n    quantiles = c(0.025, 0.975)\n    ) +\n  scale_fill_manual(\n    name = \"Probability\",\n    values = c(\"#FF0000A0\", \"#A0A0A0A0\", \"#0000FFA0\"),\n    labels = c(\"(0, 0.025]\", \"(0.025, 0.975]\", \"(0.975, 1]\")\n  ) +\n  theme_ridges()\n\nPicking joint bandwidth of 3.18"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-a-half-eye-graph",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-a-half-eye-graph",
-    "title": "Hands-on_Ex04",
-    "section": "Plotting a Half Eye graph",
-    "text": "Plotting a Half Eye graph\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-the-boxplot-with-geom_boxplot",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-the-boxplot-with-geom_boxplot",
-    "title": "Hands-on_Ex04",
-    "section": "Adding the boxplot with geom_boxplot()",
-    "text": "Adding the boxplot with geom_boxplot()\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-the-dot-plots-with-stat_dots",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-the-dot-plots-with-stat_dots",
-    "title": "Hands-on_Ex04",
-    "section": "Adding the Dot Plots with stat_dots()",
-    "text": "Adding the Dot Plots with stat_dots()\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\", \n            justification = 1.2, \n            binwidth = .5,\n            dotsize = 2)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#finishing-touch",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#finishing-touch",
-    "title": "Hands-on_Ex04",
-    "section": "Finishing touch",
-    "text": "Finishing touch\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\", \n            justification = 1.2, \n            binwidth = .5,\n            dotsize = 1.5) +\n  coord_flip() +\n  theme_economist()\n\nWarning: The provided binwidth will cause dots to overflow the boundaries of the\ngeometry.\n→ Set `binwidth = NA` to automatically determine a binwidth that ensures dots\n  fit within the bounds,\n→ OR set `overflow = \"compress\"` to automatically reduce the spacing between\n  dots to ensure the dots fit within the bounds,\n→ OR set `overflow = \"keep\"` to allow dots to overflow the bounds of the\n  geometry without producing a warning.\nℹ For more information, see the documentation of the `binwidth` and `overflow`\n  arguments of `?ggdist::geom_dots()` or the section on constraining dot sizes\n  in vignette(\"dotsinterval\") (`vignette(ggdist::dotsinterval)`)."
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#installing-and-launching-r-packages",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#installing-and-launching-r-packages",
-    "title": "Hands-on_Ex04",
-    "section": "Installing and launching R packages",
-    "text": "Installing and launching R packages\n\npacman::p_load(ggstatsplot, tidyverse)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#one-sample-test-gghistostats-method",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#one-sample-test-gghistostats-method",
-    "title": "Hands-on_Ex04",
-    "section": "One-sample test: gghistostats() method",
-    "text": "One-sample test: gghistostats() method\n\nset.seed(1234)\n\ngghistostats(\n  data = exam,\n  x = ENGLISH,\n  type = \"bayes\",\n  test.value = 60,\n  xlab = \"English scores\"\n)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#two-sample-mean-test-ggbetweenstats",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#two-sample-mean-test-ggbetweenstats",
-    "title": "Hands-on_Ex04",
-    "section": "Two-sample mean test: ggbetweenstats()",
-    "text": "Two-sample mean test: ggbetweenstats()\n\nggbetweenstats(\n  data = exam,\n  x = GENDER, \n  y = MATHS,\n  type = \"np\",\n  messages = FALSE\n)"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#oneway-anova-test-ggbetweenstats-method",
-    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#oneway-anova-test-ggbetweenstats-method",
-    "title": "Hands-on_Ex04",
-    "section": "Oneway ANOVA Test: ggbetweenstats() method",
-    "text": "Oneway ANOVA Test: ggbetweenstats() method\n\nggbetweenstats(\n  data = exam,\n  x = RACE, \n  y = ENGLISH,\n  type = \"p\",\n  mean.ci = TRUE, \n  pairwise.comparisons = TRUE, \n  pairwise.display = \"s\",\n  p.adjust.method = \"fdr\",\n  messages = FALSE\n)"
-  },
-  {
     "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html",
     "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html",
     "title": "Hands-on_Ex05",
@@ -348,13 +341,6 @@
     "title": "Hands-on_Ex05",
     "section": "14.4 Static Heatmap",
     "text": "14.4 Static Heatmap\n\nwh_heatmap &lt;- heatmap(wh_matrix,\n                      Rowv=NA, Colv=NA)\n\n\n\n\n\n\n\nwh_heatmap &lt;- heatmap(wh_matrix)\n\n\n\n\n\n\n\nwh_heatmap &lt;- heatmap(wh_matrix,\n                      scale=\"column\",\n                      cexRow = 0.6, \n                      cexCol = 0.8,\n                      margins = c(10, 4))"
-  },
-  {
-    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#creating-interactive-heatmap",
-    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#creating-interactive-heatmap",
-    "title": "Hands-on_Ex05",
-    "section": "14.5 Creating Interactive Heatmap",
-    "text": "14.5 Creating Interactive Heatmap\n\nheatmaply(mtcars)\n\nWarning in doTryCatch(return(expr), name, parentenv, handler): unable to load shared object '/Library/Frameworks/R.framework/Resources/modules//R_X11.so':\n  dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 0x0006): Library not loaded: /opt/X11/lib/libSM.6.dylib\n  Referenced from: &lt;7ECC4104-EC6A-38FD-9BEA-BFE0B870925C&gt; /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/modules/R_X11.so\n  Reason: tried: '/opt/X11/lib/libSM.6.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/X11/lib/libSM.6.dylib' (no such file), '/opt/X11/lib/libSM.6.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libSM.6.dylib' (no such file), '/Library/Java/JavaVirtualMachines/jdk-11.0.18+10/Contents/Home/lib/server/libSM.6.dylib' (no such file)\n\n\nWarning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.\nℹ Please use `linewidth` instead.\nℹ The deprecated feature was likely used in the dendextend package.\n  Please report the issue at &lt;https://github.com/talgalili/dendextend/issues&gt;.\n\n\n\n\n\n\n\nwh_d &lt;- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = \"euclidean\")\ndend_expend(wh_d)[[3]]\n\n  dist_methods hclust_methods     optim\n1      unknown         ward.D 0.6137851\n2      unknown        ward.D2 0.6289186\n3      unknown         single 0.4774362\n4      unknown       complete 0.6434009\n5      unknown        average 0.6701688\n6      unknown       mcquitty 0.5020102\n7      unknown         median 0.5901833\n8      unknown       centroid 0.6338734\n\nwh_clust &lt;- hclust(wh_d, method = \"average\")\nnum_k &lt;- find_k(wh_clust)\nplot(num_k)\n\n\n\n\n\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          Colv=NA,\n          seriate = \"none\",\n          colors = Blues,\n          k_row = 5,\n          margins = c(NA,200,60,NA),\n          fontsize_row = 4,\n          fontsize_col = 5,\n          main=\"World Happiness Score and Variables by Country, 2018 \\nDataTransformation using Normalise Method\",\n          xlab = \"World Happiness Indicators\",\n          ylab = \"World Countries\"\n          )"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#installing-and-launching-r-packages-3",
@@ -481,5 +467,12 @@
     "title": "Hands-on_Ex05",
     "section": "end of hands on exercise 05",
     "text": "end of hands on exercise 05"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISSS608-VAA",
+    "section": "",
+    "text": "Welcome to ISSS608 Visual Analytics and Applications. In this website, you will find my coursework prepared for this course."
   }
 ]
