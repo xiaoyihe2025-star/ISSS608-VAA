@@ -525,4 +525,5 @@ tm <- treemap(realis2018_summarised,
         )
 d3tree(tm,rootname = "Singapore" )
 ```
-## finish
+
+## end of hands on exercise 05
