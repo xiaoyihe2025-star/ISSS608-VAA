@@ -474,5 +474,12 @@
     "title": "Hands-on_Ex05",
     "section": "16.6.2 Designing An Interactive Treemap",
     "text": "16.6.2 Designing An Interactive Treemap\n\ntm &lt;- treemap(realis2018_summarised,\n        index=c(\"Planning Region\", \"Planning Area\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        title=\"Private Residential Property Sold, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\nd3tree(tm,rootname = \"Singapore\" )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#end-of-hands-on-exercise-05",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#end-of-hands-on-exercise-05",
+    "title": "Hands-on_Ex05",
+    "section": "end of hands on exercise 05",
+    "text": "end of hands on exercise 05"
   }
 ]
