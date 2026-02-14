@@ -1,0 +1,11 @@
+---
+title: "takehome"
+author: "Hazel"
+---
+```{r}
+pacman::p_load(tidyverse, ggdist, ggridges,janitor, patchwork, hrbrthemes)
+```
+
+```{r}
+raw_data <- read_csv("Database paper.xlsx")
+```
